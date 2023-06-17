@@ -1,4 +1,4 @@
-package com.mysqldatamigration.repository;
+package com.mysqldatamigration.rowmappers;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -8,7 +8,7 @@ import org.springframework.jdbc.core.RowMapper;
 import com.mysqldatamigration.model.Employees;
 import com.mysqldatamigration.model.Gender;
 
-public class EmployeesRowMapper implements RowMapper<Employees> {
+public class EmployeeRowMapper implements RowMapper<Employees> {
 
 	@Override
 	public Employees mapRow(ResultSet rs, int rowNum) throws SQLException {

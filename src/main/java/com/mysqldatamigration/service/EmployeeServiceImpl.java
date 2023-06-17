@@ -37,15 +37,4 @@ public class EmployeeServiceImpl implements EmployeeService {
 		return employees;
 	}
 
-	@Override
-	public Employees getEmployee(Integer empNo) throws Exception {
-		Employees employee = employeeRepository.getEmployee(empNo);
-		
-		if(employee == null) {
-			throw new Exception("No employee found.");
-		}
-		
-		return employee;
-	}
-
 }
