@@ -4,6 +4,7 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -17,9 +18,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mysqldatamigration.model.Employees;
+import com.mysqldatamigration.phases.Phase1;
 import com.mysqldatamigration.rowmappers.EmployeeToMap;
 import com.mysqldatamigration.service.EmployeeService;
-
 
 @SpringBootApplication
 public class MysqlDataMigrationApplication implements CommandLineRunner {
@@ -33,9 +34,9 @@ public class MysqlDataMigrationApplication implements CommandLineRunner {
 	}
 	
 	public void run(String... args) throws Exception {
-		//getAllEmployees();
-		//getAllEmployeesByDateRange("2000-01-01", "2000-01-30");
-		this.executeToFile("2000-01-01", "2000-01-30", "file.json");
+//		Phase1 phase = new Phase1();
+//		phase.executeToFile("2000-01-01", "2000-12-31", "file.json");
+		this.executeToFile("2000-01-01", "2000-12-31", "file.json");
 	}
 	
 	public void executeToFile(String startDate, String endDate, String fileName) throws Exception {
@@ -53,14 +54,18 @@ public class MysqlDataMigrationApplication implements CommandLineRunner {
 		}
 		
 		List<Employees> employeeList = employeeService.getAllEmployeesByDateRange(startDate, endDate);
+		
 		logger.info("Number of records returned: " + employeeList.size());
-		
-		
-		for(int i = 0; i < employeeList.size(); i++) {
-			LinkedHashMap<String, Object> map = new LinkedHashMap<>();
-			Employees employee = employeeList.get(i);
-			logger.info(employee);
+		Iterator<Employees> iterator = employeeList.iterator();
+		int rowNum = 0;
+
+		while(iterator.hasNext()) {
+			if(rowNum >= employeeList.size()) {
+				break;
+			}
 			
+			LinkedHashMap<String, Object> map = new LinkedHashMap<>();
+			Employees employee = employeeList.get(rowNum);
 			employeeToMap.getMapFromEmployee(map, employee);
 			ObjectMapper mapper = new ObjectMapper();
 			String str = null;
@@ -72,36 +77,11 @@ public class MysqlDataMigrationApplication implements CommandLineRunner {
 			}
 			
 			out.print(str+","+"\r\n");
+			rowNum++;
 		}
 		
 		bw.flush();
-		bw.close();	
-	}
-	
-	public void getAllEmployees() {
-		try {
-			logger.info("Getting the data...");
-			List<Employees> employeeList = employeeService.getEmployees();
-			
-			for(Employees employee: employeeList) {
-				logger.info(employee);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-	
-	public void getAllEmployeesByDateRange(String startDate, String endDate) {
-		try {
-			logger.info("Quering the data...");
-			List<Employees> employeeList = employeeService.getAllEmployeesByDateRange(startDate, endDate);
-			
-			for(Employees employee: employeeList) {
-				logger.info(employee);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		bw.close();
 	}
 
 }
