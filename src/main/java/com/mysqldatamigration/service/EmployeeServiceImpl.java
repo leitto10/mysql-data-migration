@@ -39,4 +39,10 @@ public class EmployeeServiceImpl implements EmployeeService {
 		return employees;
 	}
 
+	@Override
+	public void uploadEmployeeData(Employees employee) throws Exception {
+		employeeRepository.uploadEmployeeData(employee);
+		
+	}
+
 }

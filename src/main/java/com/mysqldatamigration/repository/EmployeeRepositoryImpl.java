@@ -2,6 +2,8 @@ package com.mysqldatamigration.repository;
 
 import java.util.List;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -13,12 +15,15 @@ import com.mysqldatamigration.rowmappers.EmployeeRowMapper;
 
 @Repository(value = "employeeRepository")
 public class EmployeeRepositoryImpl implements EmployeeRepository {
+	public static final Log logger = LogFactory.getLog(EmployeeRepositoryImpl.class);
 	
 	@Autowired
 	@Qualifier("firstJdbcTemplate")
 	private JdbcTemplate jdbcTemplateOne;
-
-
+	
+	@Autowired
+	@Qualifier("secondJdbcTemplate")
+	private JdbcTemplate jdbcTemplateTwo;
 	
 
 	@Override
@@ -38,6 +43,18 @@ public class EmployeeRepositoryImpl implements EmployeeRepository {
 		} catch (Exception e) {
 			return null;
 		}
+	}
+
+	@Override
+	public void uploadEmployeeData(Employees employee) {
+		String query = "INSERT INTO employees (emp_no, birth_date, first_name, last_name, gender, hire_date)"
+				+ "values (?, ?, ?, ?, ?, ?)";
+		jdbcTemplateTwo.update(query, employee.getEmpNo(), 
+										employee.getBirthDate(), 
+										employee.getFirstName(),
+										employee.getLastName(),
+										employee.getGender().toString(),
+										employee.getHireDate());
 	}
 	
 

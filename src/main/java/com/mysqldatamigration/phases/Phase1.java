@@ -11,6 +11,7 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -18,6 +19,7 @@ import com.mysqldatamigration.model.Employees;
 import com.mysqldatamigration.rowmappers.EmployeeToMap;
 import com.mysqldatamigration.service.EmployeeService;
 
+@Component
 public class Phase1 {
 	public static final Log logger = LogFactory.getLog(Phase1.class);
 	

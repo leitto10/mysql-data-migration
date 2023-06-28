@@ -25,6 +25,17 @@ public class MysqlConfig {
     JdbcTemplate firstJdbcTemplate(@Qualifier("firstDatasource") DataSource dataSource) {
         return new JdbcTemplate(dataSource);
     }
+    
+    @Bean(name = "secondDatasource")
+    @ConfigurationProperties("spring.second-datasource")
+    DataSource secondDatasource() {
+    	return DataSourceBuilder.create().build();
+    }
+    
+    @Bean(name = "secondJdbcTemplate")
+    JdbcTemplate secondJdbcTemplate(@Qualifier("secondDatasource") DataSource dataSource) {
+    	return new JdbcTemplate(dataSource);
+    }
 
 
 }
