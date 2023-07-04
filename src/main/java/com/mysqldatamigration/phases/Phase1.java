@@ -27,6 +27,7 @@ public class Phase1 {
 	public EmployeeService employeeService;
 	
 	public void executeToFile(String startDate, String endDate, String fileName) throws Exception {
+		logger.info("Running phase 1...");
 		EmployeeToMap employeeToMap = new EmployeeToMap();
 		FileWriter fw = null;
 		BufferedWriter bw = null;

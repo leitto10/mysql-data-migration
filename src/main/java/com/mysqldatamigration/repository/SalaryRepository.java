@@ -20,6 +20,10 @@ public class SalaryRepository {
 	@Autowired
 	@Qualifier("firstJdbcTemplate")
 	private JdbcTemplate jdbcTemplateOne;
+	
+	@Autowired
+	@Qualifier("secondJdbcTemplate")
+	private JdbcTemplate jdbcTemplateTwo;
 
 
 	public List<Salaries> getEmployeeSalaries(Integer employeeNumber) {
@@ -30,6 +34,14 @@ public class SalaryRepository {
 		} catch (Exception e) {
 			return null;
 		}
-		
+	}
+	
+	public void addSalary(Salaries salary) {
+		String query = "INSERT INTO salaries (emp_no, salary, from_date, to_date)"
+				+ "VALUES (?, ?, ?, ?)";
+		jdbcTemplateTwo.update(query, salary.getEmp_no(),
+										salary.getSalary(),
+										salary.getFromDate(),
+										salary.getToDate());
 	}
 }

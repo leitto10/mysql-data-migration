@@ -26,4 +26,10 @@ public class SalaryRepositoryImpl implements SalaryService {
 		return salaries;
 	}
 
+	@Override
+	public void addSalary(Salaries salary) {
+		salaryRepository.addSalary(salary);
+		
+	}
+
 }

@@ -44,7 +44,7 @@ public class EmployeeRepository {
 
 	public void uploadEmployeeData(Employees employee) {
 		String query = "INSERT INTO employees (emp_no, birth_date, first_name, last_name, gender, hire_date)"
-				+ "values (?, ?, ?, ?, ?, ?)";
+				+ "VALUES (?, ?, ?, ?, ?, ?)";
 		jdbcTemplateTwo.update(query, employee.getEmpNo(), 
 										employee.getBirthDate(), 
 										employee.getFirstName(),

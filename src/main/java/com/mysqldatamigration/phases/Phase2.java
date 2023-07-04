@@ -3,6 +3,7 @@ package com.mysqldatamigration.phases;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.FileSystems;
 import java.util.List;
@@ -12,11 +13,13 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.configurationprocessor.json.JSONArray;
+import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.stereotype.Component;
 
 import com.mysqldatamigration.model.Employees;
-import com.mysqldatamigration.rowmappers.EmployeeToTable;
+import com.mysqldatamigration.rowmappers.EmployeeListToTable;
 import com.mysqldatamigration.service.EmployeeService;
+
 
 @Component
 public class Phase2 {
@@ -25,7 +28,8 @@ public class Phase2 {
 	@Autowired
 	public EmployeeService employeeService;
 	
-	public void executeToTable() throws Exception {
+	public void executeToTable() throws FileNotFoundException, JSONException {
+		logger.info("Running phase 2...");
 		System.out.println("\n");
 		String currDirectory = FileSystems.getDefault().getPath("").toAbsolutePath().toString();
 		
@@ -45,23 +49,31 @@ public class Phase2 {
                 jsonArray = new JSONArray(jsonTxt);
                 logger.info("jsonTxt: "+jsonTxt);
 			} catch (FileNotFoundException e) {
+				System.out.println("File Not Found");
+				e.printStackTrace();
+			} catch (IOException e) {
 				e.printStackTrace();
 			}
 			
+		} else {
+			logger.info("The file doesn't exits...");
 		}
 		
 		this.uploadData(jsonArray);
 	}
 	
-	public void uploadData(JSONArray jsonArray) throws Exception {
-		EmployeeToTable mapper = new EmployeeToTable();
-		
+	public void uploadData(JSONArray jsonArray) throws JSONException {
+		EmployeeListToTable mapper = new EmployeeListToTable();
 		List<Employees> employeeList = mapper.jsonArrayToList(jsonArray);
-		logger.info("employeeList: "+employeeList.size());
 		
-		for(int i = 0; i < employeeList.size(); i++) {
-			Employees employee = employeeList.get(i);
-			employeeService.uploadEmployeeData(employee);
+		logger.info("employeeList: "+employeeList.size());		
+
+		for(Employees employee: employeeList) {
+			try {
+				employeeService.uploadEmployeeData(employee);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 		
 		logger.info("Data Uploaded Successfully");

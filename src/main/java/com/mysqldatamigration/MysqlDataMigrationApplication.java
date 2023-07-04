@@ -1,21 +1,27 @@
 package com.mysqldatamigration;
 
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.nio.file.FileSystems;
+import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.configurationprocessor.json.JSONArray;
+import org.springframework.boot.configurationprocessor.json.JSONObject;
 
-import com.mysqldatamigration.model.Salaries;
-import com.mysqldatamigration.model.Titles;
 import com.mysqldatamigration.phases.Phase1;
 import com.mysqldatamigration.phases.Phase2;
-import com.mysqldatamigration.service.SalaryService;
-import com.mysqldatamigration.service.TitleService;
+import com.mysqldatamigration.phases.Phase3;
 
 
 @SpringBootApplication
@@ -29,10 +35,8 @@ public class MysqlDataMigrationApplication implements CommandLineRunner {
 	public Phase2 phaseTwo;
 	
 	@Autowired
-	public SalaryService salaryService;
+	public Phase3 phaseThree;
 	
-	@Autowired
-	public TitleService titleService;
 	
 
 	public static void main(String[] args) {
@@ -40,20 +44,13 @@ public class MysqlDataMigrationApplication implements CommandLineRunner {
 	}
 	
 	public void run(String... args) throws Exception {
-//		this.phaseOne.executeToFile("2000-01-01", "2000-12-31", "file.json");
+		this.phaseOne.executeToFile("2000-01-01", "2000-12-31", "file.json");
 		
 //		this.phaseTwo.executeToTable();
 		
-//		List<Salaries> getSalaries = salaryService.getEmployeeSalaries(47291);
-//		
-//		for(Salaries salary: getSalaries) {
-//			logger.info(salary);
-//		}
+//		this.phaseThree.excutePhase3();
 		
-		Titles title = titleService.getTitle(227544);
-		logger.info(title);
 	}
-	
 	
 }
 

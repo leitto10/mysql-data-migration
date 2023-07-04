@@ -11,7 +11,7 @@ import com.mysqldatamigration.model.Employees;
 import com.mysqldatamigration.model.Gender;
 import com.mysqldatamigration.utils.DateConver;
 
-public class EmployeeToTable {
+public class EmployeeListToTable {
 	
 	// Takes JSON array and maps them into an Employee list
 	public List<Employees> jsonArrayToList(JSONArray jsonArray) throws JSONException {

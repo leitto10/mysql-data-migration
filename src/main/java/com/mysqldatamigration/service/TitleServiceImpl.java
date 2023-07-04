@@ -18,4 +18,10 @@ public class TitleServiceImpl implements TitleService {
 		return titleRepository.getTitle(empNumber);
 	}
 
+	@Override
+	public void addTitle(Titles title) {
+		titleRepository.addTitle(title);
+		
+	}
+
 }

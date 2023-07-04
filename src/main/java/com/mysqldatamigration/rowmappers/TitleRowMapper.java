@@ -7,7 +7,7 @@ import org.springframework.jdbc.core.RowMapper;
 
 import com.mysqldatamigration.model.Titles;
 
-public class TitleToMap implements RowMapper<Titles>{
+public class TitleRowMapper implements RowMapper<Titles>{
 
 	@Override
 	public Titles mapRow(ResultSet rs, int rowNum) throws SQLException {
