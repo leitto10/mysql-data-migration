@@ -19,9 +19,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.configurationprocessor.json.JSONArray;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
 
-import com.mysqldatamigration.phases.Phase1;
-import com.mysqldatamigration.phases.Phase2;
-import com.mysqldatamigration.phases.Phase3;
+import com.mysqldatamigration.phases.PhaseOne;
+import com.mysqldatamigration.phases.PhaseThree;
+import com.mysqldatamigration.phases.PhaseTwo;
 
 
 @SpringBootApplication
@@ -29,13 +29,13 @@ public class MysqlDataMigrationApplication implements CommandLineRunner {
 	public static final Log logger = LogFactory.getLog(MysqlDataMigrationApplication.class);
 	
 	@Autowired
-	public Phase1 phaseOne;
+	public PhaseOne phaseOne;
 	
 	@Autowired
-	public Phase2 phaseTwo;
+	public PhaseTwo phaseTwo;
 	
 	@Autowired
-	public Phase3 phaseThree;
+	public PhaseThree phaseThree;
 	
 	
 
@@ -44,11 +44,14 @@ public class MysqlDataMigrationApplication implements CommandLineRunner {
 	}
 	
 	public void run(String... args) throws Exception {
-		this.phaseOne.executeToFile("2000-01-01", "2000-12-31", "file.json");
+		String fileName = "2020-01.json";
+		String startDate = "2000-01-01";
+		String endDate = "2000-12-31";
+//		this.phaseOne.executeToFile(startDate, endDate, fileName);
 		
-//		this.phaseTwo.executeToTable();
+		this.phaseTwo.executeToTable(fileName);
 		
-//		this.phaseThree.excutePhase3();
+//		this.phaseThree.excutePhase3(fileName);
 		
 	}
 	

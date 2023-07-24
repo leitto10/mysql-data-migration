@@ -16,27 +16,31 @@ import org.springframework.boot.configurationprocessor.json.JSONArray;
 import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.stereotype.Component;
 
+import com.mysqldatamigration.model.Departments;
 import com.mysqldatamigration.model.Employees;
 import com.mysqldatamigration.rowmappers.EmployeeListToTable;
+import com.mysqldatamigration.service.DepartmentService;
 import com.mysqldatamigration.service.EmployeeService;
 
 
 @Component
-public class Phase2 {
-	public static final Log logger = LogFactory.getLog(Phase2.class);
+public class PhaseTwo {
+	public static final Log logger = LogFactory.getLog(PhaseTwo.class);
 	
 	@Autowired
 	public EmployeeService employeeService;
 	
-	public void executeToTable() throws FileNotFoundException, JSONException {
-		logger.info("Running phase 2...");
-		System.out.println("\n");
+	@Autowired
+	public DepartmentService departmentService;
+	
+	public void executeToTable(String fileName) throws FileNotFoundException, JSONException {
+		logger.info("Running phase 2 ...");
 		String currDirectory = FileSystems.getDefault().getPath("").toAbsolutePath().toString();
 		
 		logger.info("currDirectory: "+currDirectory);
 		System.out.println("\n");
 		
-		File file = new File(currDirectory, "file.json");
+		File file = new File(currDirectory, fileName);
 		JSONArray jsonArray = null;
 		
 		if(file.exists()) {
@@ -63,20 +67,34 @@ public class Phase2 {
 	}
 	
 	public void uploadData(JSONArray jsonArray) throws JSONException {
-		EmployeeListToTable mapper = new EmployeeListToTable();
-		List<Employees> employeeList = mapper.jsonArrayToList(jsonArray);
-		
-		logger.info("employeeList: "+employeeList.size());		
-
-		for(Employees employee: employeeList) {
-			try {
-				employeeService.uploadEmployeeData(employee);
-			} catch (Exception e) {
-				e.printStackTrace();
+//		logger.info("Uploading employees data...");
+//		EmployeeListToTable mapper = new EmployeeListToTable();
+//		List<Employees> employeeList = mapper.jsonArrayToList(jsonArray);
+//		
+//		logger.info("employeeList: "+employeeList.size());		
+//
+//		for(Employees employee: employeeList) {
+//			try {
+//				employeeService.uploadEmployeeData(employee);
+//			} catch (Exception e) {
+//				e.printStackTrace();
+//			}
+//		}
+//		
+//		logger.info("Employee data uploaded Successfully");
+		logger.info("Uploading departmens data...");
+		try {
+			List<Departments> getAllDepartments = departmentService.getDepartments();
+			
+			for(Departments department: getAllDepartments) {
+				departmentService.addDepartment(department);
 			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		
-		logger.info("Data Uploaded Successfully");
+		logger.info("Departments` data uploaded Successfully");
 	}
 	
 

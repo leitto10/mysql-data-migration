@@ -10,7 +10,7 @@ import com.mysqldatamigration.repository.SalaryRepository;
 
 
 @Service("salaryService")
-public class SalaryRepositoryImpl implements SalaryService {
+public class SalaryServiceyImpl implements SalaryService {
 	
 	@Autowired
 	private SalaryRepository salaryRepository;
