@@ -45,13 +45,12 @@ public class MysqlDataMigrationApplication implements CommandLineRunner {
 	
 	public void run(String... args) throws Exception {
 		String fileName = "2020-01.json";
-		String startDate = "2000-01-01";
-		String endDate = "2000-12-31";
+		String startDate = "1985-01-01";
+		String endDate = "2000-01-28";
+		
 //		this.phaseOne.executeToFile(startDate, endDate, fileName);
-		
-		this.phaseTwo.executeToTable(fileName);
-		
-//		this.phaseThree.excutePhase3(fileName);
+//		this.phaseTwo.executeToTable(fileName);	
+		this.phaseThree.excutePhase3(fileName);
 		
 	}
 	

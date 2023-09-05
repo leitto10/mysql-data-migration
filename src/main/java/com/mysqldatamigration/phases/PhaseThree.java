@@ -23,8 +23,8 @@ import com.mysqldatamigration.service.TitleService;
 
 
 @Component
-public class Phase3 {
-	public static final Log logger = LogFactory.getLog(Phase3.class);
+public class PhaseThree {
+	public static final Log logger = LogFactory.getLog(PhaseThree.class);
 	
 	@Autowired
 	public SalaryService salaryService;
@@ -32,15 +32,15 @@ public class Phase3 {
 	@Autowired
 	public TitleService titleService;
 	
-	public void excutePhase3() throws Exception {
-		logger.info("Running phase 3...");
+	public void excutePhase3(String fileName) throws Exception {
+		logger.info("Running phase 3 ...");
 		System.out.println("\n");
 		String currDirectory = FileSystems.getDefault().getPath("").toAbsolutePath().toString();
 		
 		logger.info("currDirectory: "+currDirectory);
 		System.out.println("\n");
 		
-		File file = new File(currDirectory, "file.json");
+		File file = new File(currDirectory, fileName);
 		JSONArray jsonArray = null;
 		
 		if(file.exists()) {
@@ -51,7 +51,6 @@ public class Phase3 {
 				String jsonTxt = IOUtils.toString(input, "UTF-8");
                 jsonTxt = "[" + jsonTxt + "]";
                 jsonArray = new JSONArray(jsonTxt);
-                logger.info("jsonTxt: "+jsonTxt);
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
 			}
@@ -59,12 +58,13 @@ public class Phase3 {
 			logger.info("The file doesn't exits...");
 		}
 		
-		this.uploadTitleData(jsonArray);
+		this.uploadData(jsonArray);
 	}
 	
-	public void uploadTitleData(JSONArray jsonArray) throws Exception {
+	public void uploadData(JSONArray jsonArray) throws Exception {
 		List<Integer> salariesList = new ArrayList<>();
 		List<Integer> titlesList = new ArrayList<>();
+		
 		
 		for(int i=0; i<jsonArray.length()-1; i++) {
 			JSONObject currJson = jsonArray.getJSONObject(i);
@@ -72,21 +72,21 @@ public class Phase3 {
 			titlesList.add(currJson.getInt("emp_no"));
 		}
 		
-		List<Salaries> getSalaries = new ArrayList<>();
-		for(Integer salary: salariesList) {
-			getSalaries.addAll(salaryService.getEmployeeSalaries(salary));
-		}
-
-		System.out.println("Uploading salaries data: \n");
-		System.out.println("Salaries list size: "+getSalaries.size());
-		for(Salaries salary: getSalaries) {
-			salaryService.addSalary(salary);
-			logger.info(salary);
-		}
+//		List<Salaries> getSalaries = new ArrayList<>();
+//		for(Integer salary: salariesList) {
+//			getSalaries.addAll(salaryService.getEmployeeSalaries(salary));
+//		}
+//
+//		System.out.println("Uploading salaries data: \n");
+//		System.out.println("Salaries list size: "+getSalaries.size());
+//		for(Salaries salary: getSalaries) {
+//			salaryService.addSalary(salary);
+//			logger.info(salary);
+//		}
 		
 		List<Titles> getTitlesData = new ArrayList<>();
 		for(Integer title: titlesList) {
-			getTitlesData.add(titleService.getTitle(title));
+			getTitlesData.addAll(titleService.getTitles(title));
 		}
 		
 		System.out.println("Uploading titles data: \n");

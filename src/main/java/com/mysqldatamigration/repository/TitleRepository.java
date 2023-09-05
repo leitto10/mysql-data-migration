@@ -1,5 +1,7 @@
 package com.mysqldatamigration.repository;
 
+import java.util.List;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,15 +26,14 @@ public static final Log logger = LogFactory.getLog(TitleRepository.class);
 	private JdbcTemplate jdbcTemplateTwo;
 	
 	
-	public Titles getTitle(Integer empNumber) {
+	public List<Titles> getTitles(Integer empNumber) {
 		String query = "SELECT * FROM titles WHERE emp_no = ?";
 		
 		try {
-			return jdbcTemplateOne.queryForObject(query, new TitleRowMapper(), new Object[] {empNumber});
+			return jdbcTemplateOne.query(query, new TitleRowMapper(), new Object[] {empNumber});
 		} catch (Exception e) {
-			// TODO: handle exception
+			return null;
 		}
-		return null;
 	}
 	
 	public void addTitle(Titles title) {

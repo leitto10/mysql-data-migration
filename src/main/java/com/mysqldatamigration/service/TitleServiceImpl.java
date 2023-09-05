@@ -1,5 +1,7 @@
 package com.mysqldatamigration.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,8 +16,8 @@ public class TitleServiceImpl implements TitleService {
 	private TitleRepository titleRepository;
 
 	@Override
-	public Titles getTitle(Integer empNumber) {
-		return titleRepository.getTitle(empNumber);
+	public List<Titles> getTitles(Integer empNumber)  {
+		return titleRepository.getTitles(empNumber);
 	}
 
 	@Override

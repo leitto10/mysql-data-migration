@@ -26,7 +26,7 @@ public class EmployeeRepository {
 	
 
 	public List<Employees> getAllEmployees() {
-		String query = "SELECT * FROM employees";
+		String query = "SELECT * FROM employees LIMIT 10";
 		return jdbcTemplateOne.query(query, new EmployeeRowMapper());
 	}
 
