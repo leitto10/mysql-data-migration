@@ -89,8 +89,8 @@ public class PhaseThree {
 			getTitlesData.addAll(titleService.getTitles(title));
 		}
 		
-		System.out.println("Uploading titles data: \n");
-		System.out.println("Titles list size: "+titlesList.size());
+		logger.info("Uploading titles data:");
+		logger.info("Titles list size: "+titlesList.size());
 		for(Titles title: getTitlesData) {
 			titleService.addTitle(title);
 			logger.info(title);
